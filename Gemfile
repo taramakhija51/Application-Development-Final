@@ -1,6 +1,18 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+
+gem "rspec"
+gem "activerecord", "~> 6.0.0", :require => 'active_record'
+gem "sinatra-activerecord"
+gem "pry"
+gem 'colorize'
+gem 'tty-prompt'
+gem 'tty-box'
+gem "rake"
+gem "database_cleaner"
+gem "require_all"
+
 ruby '2.7.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -15,6 +27,12 @@ gem 'bcrypt'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
+
+gem 'rack-cors'
+gem 'active_model_serializers'
+gem 'rspotify'
+gem 'rest-client'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

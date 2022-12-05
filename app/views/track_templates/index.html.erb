@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<%@songs.each do |s|%>
+      <%track_id = s.id%>
+      <%track_name = s.name%>
+      <%audio_features = s.audio_features%>
+      <%key = audio_features.key%>
+      <%bpm = audio_features.tempo%>
+      <%mode = audio_features.mode%>
+      <%c = (7*key + 3*mode + 5) % 12%>
+      <%if c == 0%>
+        <%c = 12%>
+      <%else%>
+        <%c = c + 1%>
+      <%end%>
+      <%if mode = 1%>
+        <%camelot_key = c.to_s + "B"%>
+      <%elsif mode = 0%>
+        <%camelot_key = c.to_s + "A"%>
+      <%end%>
+      <%=camelot_key%>
+      <%=track_id%>
+      <%=bpm%>
+      <br>
+    <%end%>
+
+  <form action = "/track_list">
+    <button>What is your track url?</button>
+  </form>
+  <%puts "What is your track url?"%>
+  track = gets.chomp("https://open.spotify.com/album/")
+</html>
