@@ -10,30 +10,34 @@ task :hello => :environment do
   playlist.name               #=> "d33p"
   playlist.description        #=> "d33p h0uz"
   playlist.followers['total'] #=> 1
-  songs = playlist.tracks          #=> (Track array)
+  songs = playlist.tracks
+ # p songs.images 
+           #=> (Track array)
+  song = RSpotify::Track.find('3jlbL2OTD5YmIunYzgQTAN')
+  p song.audio_features.mode
+  p song.audio_features.key
   #track = RSpotify::Track.find('34xTFwjPQ1dC6uJmleno7x')
-  songs.each do |s|
-    track_id = s.id
-    track_name = s.name
-    key = s.audio_features.key
-    bpm = s.audio_features.tempo
-    mode = s.audio_features.mode
-    c = (7*key + 3*mode + 5) % 12 
-    if c == 0
-      c = 12
-    else
-      c = c + 1
-    end
-    if mode = 1
-      camelot_key = c.to_s + "B"
-    elsif mode = 0
-      camelot_key = c.to_s + "A"
-    end
-    p camelot_key
-    p track_id
-    p bpm
-    p (" ")
-  end
+  # songs.each do |s|
+  #   track_id = s.id
+  #   track_name = s.name
+  #   key = s.audio_features.key
+  #   bpm = s.audio_features.tempo
+  #   mode = s.audio_features.mode
+  #   c = (7*key + 3*mode + 5) % 12 
+  #   if c == 0
+  #     c = 12
+  #   else
+  #     c = c + 1
+  #   end
+  #   if mode = 1
+  #     camelot_key = c.to_s + "B"
+  #   elsif mode = 0
+  #     camelot_key = c.to_s + "A"
+  #   end
+  #   p camelot_key
+  #   p track_id
+  #   p bpm
+  #   p (" ")
 
 
 

@@ -1,0 +1,90 @@
+ <!DOCTYPE html>
+<html>
+<p><%=@playlist_url.chomp("https://open.spotify.com/playlist/")%></p>
+<p><%=@playlist_id%></p>
+<p><%=@playlist.images[1]%></p>
+<img>
+<style>
+
+  body {
+    font-family: trattatello;
+    background-color: #FCF0CC;
+    color: #5C7457;
+  }
+
+  h1 {
+    font-size: 85px;
+  }
+  
+  .gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    max-width: 830px;
+    margin: 0 auto;
+  }
+
+  .gallery>div {
+    width: 200px;
+    height: 200px;
+    float: left;
+    font-size: 25px;
+    background-position: center;
+    background-size: cover;
+    opacity: 0;
+  }
+
+  .gallery>div:hover {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  @media (max-width: 830px) {
+    .gallery>div {
+      width: calc(33vw - 10px);
+      height: calc(33vw - 10px);
+    }
+  }
+</style>
+<h1><%=@playlist.name%></h1>
+
+ <table border="1">
+<%@songs.each do |s|%>
+  <tr>
+      <%#track_id = s.id%>
+      <%@track_name = s.name%>
+      <%#=s.images{:url}%>
+      <%@audio_features = s.audio_features%>
+      <%@key = @audio_features.key%>
+      <%@bpm = @audio_features.tempo%>
+      <%@mode = @audio_features.mode%>
+      <%@energy = @audio_features.energy%>
+      <%@danceability = @audio_features.danceability%>
+      <%@valence = @audio_features.valence%>
+      <%@c = (7*@key + 3*@mode + 5) % 12%>
+      <%if @c == 0%> 
+        <%@c =+ 12%>
+      <%else%>
+        <%@c == @c%>
+      <%end%>
+      <%# <%if c == 0%>
+        <%#c = 11%>
+      <%#else%>
+        <%#c = c%>
+      <%#end%>
+      <%if @mode == 1%>
+        <%@camelot_key = @c.to_s + "B"%>
+      <%elsif @mode == 0%>
+        <%@camelot_key = @c.to_s + "A"%>
+      <%end%>
+      <td><%=@track_name%></td>
+      <td><%=@camelot_key%></td>
+      <%#=track_id%>
+      <td><%=@bpm%></td>
+      <td>
+        <a href="/track_list/<%= s.id %>" class="btn btn-block btn-outline-secondary">
+        Show details
+        </a>
+      </td>
+    <%end%>
+
+</html>
