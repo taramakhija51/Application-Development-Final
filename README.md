@@ -1,14 +1,8 @@
-# Refactoring MSM Queries — Again!
+# Spotify DJ
 
-In this project, we'll re-write our association accessor methods using ActiveRecord's powerful Association helpers.
-
-Use this tool to help plan out your new association methods:
-
-[https://association-accessors.firstdraft.com/](https://association-accessors.firstdraft.com/)
-
+This project reorganizes any Spotify playlist via a tool used in DJing called the Camelot key, as well as via BPM as a tiebreaker. It can be used to more smoothly transition between songs in a playlist.
 ## Setup
 
 1. Start the web server by running `bin/server`.
 1. Navigate to your live application preview.
-1. As you work, remember to navigate to `/git` and **commit often as you work.**
-1. Revisit your pages and `rails grade` to ensure everything still works.
+1. Paste in a url for a Spotify playlist (note: it needs to be a playlist URL and not an album or track URL)
