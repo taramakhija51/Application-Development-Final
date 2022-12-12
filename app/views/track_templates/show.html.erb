@@ -1,10 +1,8 @@
  <!DOCTYPE html>
 <html>
-<p><%=@songs.is_a?(Array)%>
-<p><%=@playlist_url%></p>
-<p><%=@playlist_id%></p>
-<p><img src=<%=@playlist.images.first.fetch("url")%>></p>
-<img>
+<a href=<%=@playlist_url%>>Visit Playlist on Spotify</a>
+<%$playlist_page_url = request.original_url%>
+<p><img src=<%=@playlist.images.first.fetch("url")%> width="200" height="200"></p>
 <style>
 
   body {
@@ -19,7 +17,7 @@
   
   .gallery {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     max-width: 830px;
     margin: 0 auto;
   }
@@ -29,14 +27,14 @@
     height: 200px;
     float: left;
     font-size: 25px;
-    background-position: center;
+    background-position: right;
     background-size: cover;
-    opacity: 0;
+    opacity: 1;
   }
 
   .gallery>div:hover {
     visibility: visible;
-    opacity: 1;
+    opacity: .75;
   }
 
   @media (max-width: 830px) {
@@ -45,14 +43,30 @@
       height: calc(33vw - 10px);
     }
   }
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding-right: 8px;
+  text-align: left;
+  border-bottom: 1px solid #DDD;
+}
+
 </style>
 
 <h1><%=@playlist.name%></h1>
-<p><%#=@songs%></p>
 <%$song_array = []%>
+<%@zero == 0%>
   <%@songs.each do |s|%>
       <%$track_id = s.id%>
+      <%@track_cover = s.album.images.first.fetch("url")%>
       <%@track_name = s.name%>
+      <%@explicit = s.explicit%>
+      <%@preview = s.preview_url%>
+      <%@popularity = s.popularity%>
       <%@audio_features = s.audio_features%>
       <%@key = @audio_features.key%>
       <%@bpm = @audio_features.tempo%>
@@ -60,6 +74,7 @@
       <%@energy = @audio_features.energy%>
       <%@danceability = @audio_features.danceability%>
       <%@valence = @audio_features.valence%>
+      <%@instrumentalness = @audio_features.instrumentalness%>
       <%@c = (7*@key + 3*@mode + 5) % 12%>
       <%if @c == 0%> 
         <%@c =+ 12%>
@@ -74,6 +89,7 @@
         <%$song = Hash.new%>
         <%$song.store(:track_id, $track_id) %>
         <%$song.store(:track_name, @track_name)%>
+        <%$song.store(:track_cover, @track_cover)%>
         <%$song.store(:track_camelot, @camelot_key)%>
         <%$song.store(:camelot_num, @c)%>
         <%$song.store(:mode, @mode)%>
@@ -81,22 +97,25 @@
         <%$song.store(:energy, @energy)%>
         <%$song.store(:danceability, @danceability)%>
         <%$song.store(:valence, @valence)%>
+        <%$song.store(:explicit, @explicit)%>
+        <%$song.store(:preview, @preview)%>
+        <%$song.store(:popularity, @popularity)%>
+        <%$song.store(:instrumentalness, @instrumentalness)%>
         <%$song%>
 
         <%$song_array.push($song)%>
- 
   <%end%>
     <%$song_array%>
-    <%=$song_array.class%>
+    <%$song_array.class%>
     <%$song_array_ordered = $song_array.sort_by{|song| [song[:camelot_num], (song[:camelot_num] + song[:mode])%2, song[:bpm]]}%>
-    <%=$song_array_ordered%>
+    <%$song_array_ordered%>
 
-<table border="1">
+<table border="1" style="width:100%">
     <tr>
       <td>Track Name</td>
       <td>Track Camelot Key</td>
       <td>Track BPM</td>
-      <td>Show Details</td>
+      <td style="25%">Show Details</td>
     </tr>     
 
   <%for $song in $song_array_ordered do%>
@@ -112,10 +131,13 @@
       </td>
       <td>
         <a href="/track_list/<%=$song.fetch(:track_id)%>" class="btn btn-block btn-outline-secondary">
-        Show details
+        <section class="gallery">
+        <div id="box<%=(@zero =+ 1).to_s%>" class="gallery" style="background-image: url(<%=$song.fetch(:track_cover)%>)"></div>
+      </section>
         </a>
       </td>
-    </tr>     
+    </tr> 
+      
   <%end%>
 </table>
 </html>

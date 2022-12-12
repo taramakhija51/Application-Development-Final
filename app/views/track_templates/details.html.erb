@@ -1,13 +1,27 @@
-
+<style>
+  body {
+    font-family: trattatello;
+    background-color: #FCF0CC;
+    color: #5C7457;
+  }
+</style>
+<br>
+<a href=<%=$playlist_page_url%>>Back to Playlist Page</a>
 <%@split_url = request.original_url.split("/")%>
 <%@song_id = @split_url.last%>
 <%@song_id%>
+<br>
+<br>
 <table border="1">
   <tr>
     <td>Song Name</td>
     <td>Energy</td>
     <td>Danceability</td>
     <td>Valence</td>
+    <td>Instrumentalness</td>
+    <td>Explicit</td>
+    <td>Popularity (100 as most popular)</td>
+    <td>Preview</td>
   </tr>
 
   <%@relevant_song= $song_array.find {|x| x[:track_id] == @song_id}%>
@@ -17,5 +31,9 @@
     <td><%=@relevant_song.fetch(:energy)%></td>
     <td><%=@relevant_song.fetch(:danceability)%></td>
     <td><%=@relevant_song.fetch(:valence)%></td>
+    <td><%=@relevant_song.fetch(:instrumentalness)%></td>
+    <td><%=@relevant_song.fetch(:explicit)%></td>
+    <td><%=@relevant_song.fetch(:popularity)%></td>
+    <td><a href=<%=@relevant_song.fetch(:preview)%> target="_blank">Song Preview</a></td>
   </tr>
 </table>
