@@ -13,33 +13,36 @@ class ApplicationController < ActionController::Base
 
   def show
    @playlist_url = params.fetch("playlist_url")
-   @playlist_id = @playlist_url.chomp("https://open.spotify.com/playlist/")  
-
+   @playlist_url_split = @playlist_url.split("/") 
+   @playlist_id = @playlist_url_split.last
     RSpotify.authenticate(ENV.fetch("spotify_key"), ENV.fetch("spotify_secret"))
-    @playlist = RSpotify::Playlist.find('tmakhija', '0OMHxTBGzwnYjcmiEcbQtJ')
+    @playlist = RSpotify::Playlist.find('tmakhija', @playlist_id)
     @playlist.name               #=> "d33p"
     @playlist.description        #=> "d33p h0uz"
     @playlist.followers['total'] #=> 1
     @playlist.id
     @playlist.images
     @songs = @playlist.tracks
+
+
   render({ :template => "/track_templates/show.html.erb" })
   end
 
   def details  
-  # playlist_url = params.fetch("playlist_url")
-  # @playlist_id = @playlist_url.chomp("https://open.spotify.com/playlist/") 
-    RSpotify.authenticate(ENV.fetch("spotify_key"), ENV.fetch("spotify_secret"))
-    @playlist = RSpotify::Playlist.find('tmakhija', '0OMHxTBGzwnYjcmiEcbQtJ')
-    @playlist.name               #=> "d33p"
-    @playlist.description        #=> "d33p h0uz"
-    @playlist.followers['total'] #=> 1
-    @playlist.id
-    @playlist.images
-    @songs = @playlist.tracks 
-    the_id = params.fetch("path_id") #double check "path_id"... 
-    matching_songs = Movie.where({ :id => the_id }) #will have to make Song db
-    @the_song = matching_movies.at(0)   
+
+    #  RSpotify.authenticate(ENV.fetch("spotify_key"), ENV.fetch("spotify_secret"))
+    #  @playlist = RSpotify::Playlist.find('tmakhija', @playlist_id)
+    #  @playlist.name               #=> "d33p"
+    #  @playlist.description        #=> "d33p h0uz"
+    #  @playlist.followers['total'] #=> 1
+    #  @playlist.id
+    #  @playlist.images
+    #  @songs = @playlist.tracks
+     #the_id = params.fetch("path_id") #double check "path_id"... 
+    #  @the_id = params.fetch("path_id")
+    #  @matching_songs = @song.where({ :track_id => @the_id })
+    #  @the_song = @matching_songs.at(0)
+     #matching_songs = @songs.at(@the_id) #will have to make Song db 
   render({ :template => "/track_templates/details.html.erb" })
   end
 
@@ -51,8 +54,12 @@ class ApplicationController < ActionController::Base
     render({ :template => "/track_templates/index.html.erb"})
   end
 
+  def playlist_home
+    render({ :template => "/track_templates/show.html.erb" })
+  end
+
   def index
-    p "hi"
+    
     require 'rspotify' 
     # me = RSpotify::User.find('tmakhija')
     # me.playlists #=> (Playlist array)

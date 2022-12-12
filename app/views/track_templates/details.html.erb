@@ -1,16 +1,21 @@
-<p><%=@playlist_id%></p>
- <table border="1">
+
+<%@split_url = request.original_url.split("/")%>
+<%@song_id = @split_url.last%>
+<%@song_id%>
+<table border="1">
   <tr>
     <td>Song Name</td>
-    <td>Artist</td>
     <td>Energy</td>
     <td>Danceability</td>
     <td>Valence</td>
   </tr>
+
+  <%@relevant_song= $song_array.find {|x| x[:track_id] == @song_id}%>
+
   <tr>
-    <td></td>
-    <td></td>
-    <td><%=@energy%></td>
-    <td><%=@danceability%></td>
-    <td><%=@valence%></td>
+    <td><%=@relevant_song.fetch(:track_name)%></td>
+    <td><%=@relevant_song.fetch(:energy)%></td>
+    <td><%=@relevant_song.fetch(:danceability)%></td>
+    <td><%=@relevant_song.fetch(:valence)%></td>
   </tr>
+</table>

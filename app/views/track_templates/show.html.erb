@@ -1,8 +1,9 @@
  <!DOCTYPE html>
 <html>
-<p><%=@playlist_url.chomp("https://open.spotify.com/playlist/")%></p>
+<p><%=@songs.is_a?(Array)%>
+<p><%=@playlist_url%></p>
 <p><%=@playlist_id%></p>
-<p><%=@playlist.images[1]%></p>
+<p><img src=<%=@playlist.images.first.fetch("url")%>></p>
 <img>
 <style>
 
@@ -45,14 +46,13 @@
     }
   }
 </style>
-<h1><%=@playlist.name%></h1>
 
- <table border="1">
-<%@songs.each do |s|%>
-  <tr>
-      <%#track_id = s.id%>
+<h1><%=@playlist.name%></h1>
+<p><%#=@songs%></p>
+<%$song_array = []%>
+  <%@songs.each do |s|%>
+      <%$track_id = s.id%>
       <%@track_name = s.name%>
-      <%#=s.images{:url}%>
       <%@audio_features = s.audio_features%>
       <%@key = @audio_features.key%>
       <%@bpm = @audio_features.tempo%>
@@ -66,25 +66,56 @@
       <%else%>
         <%@c == @c%>
       <%end%>
-      <%# <%if c == 0%>
-        <%#c = 11%>
-      <%#else%>
-        <%#c = c%>
-      <%#end%>
       <%if @mode == 1%>
         <%@camelot_key = @c.to_s + "B"%>
       <%elsif @mode == 0%>
         <%@camelot_key = @c.to_s + "A"%>
       <%end%>
-      <td><%=@track_name%></td>
-      <td><%=@camelot_key%></td>
-      <%#=track_id%>
-      <td><%=@bpm%></td>
+        <%$song = Hash.new%>
+        <%$song.store(:track_id, $track_id) %>
+        <%$song.store(:track_name, @track_name)%>
+        <%$song.store(:track_camelot, @camelot_key)%>
+        <%$song.store(:camelot_num, @c)%>
+        <%$song.store(:mode, @mode)%>
+        <%$song.store(:bpm, @bpm)%>
+        <%$song.store(:energy, @energy)%>
+        <%$song.store(:danceability, @danceability)%>
+        <%$song.store(:valence, @valence)%>
+        <%$song%>
+
+        <%$song_array.push($song)%>
+ 
+  <%end%>
+    <%$song_array%>
+    <%=$song_array.class%>
+    <%$song_array_ordered = $song_array.sort_by{|song| [song[:camelot_num], (song[:camelot_num] + song[:mode])%2, song[:bpm]]}%>
+    <%=$song_array_ordered%>
+
+<table border="1">
+    <tr>
+      <td>Track Name</td>
+      <td>Track Camelot Key</td>
+      <td>Track BPM</td>
+      <td>Show Details</td>
+    </tr>     
+
+  <%for $song in $song_array_ordered do%>
+    <tr>
       <td>
-        <a href="/track_list/<%= s.id %>" class="btn btn-block btn-outline-secondary">
+        <%=$song.fetch(:track_name)%>
+      </td>
+      <td>
+        <%=$song.fetch(:track_camelot)%>
+      </td>
+      <td>
+        <%=$song.fetch(:bpm)%>
+      </td>
+      <td>
+        <a href="/track_list/<%=$song.fetch(:track_id)%>" class="btn btn-block btn-outline-secondary">
         Show details
         </a>
       </td>
-    <%end%>
-
+    </tr>     
+  <%end%>
+</table>
 </html>
